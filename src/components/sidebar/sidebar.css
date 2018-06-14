@@ -7,6 +7,11 @@
   border-radius: 50%;
   cursor: pointer;
 }
+.list-menu-icon:hover{
+  border: 1px solid black;
+  width: 99%;
+  cursor: pointer;
+}
 .dashboard-user-image:hover{
   border-color: red;
 }
@@ -37,4 +42,9 @@
 }
 .SideBar-root-112{
   height: 100% !important;
+}
+@media only screen and (max-width: 600px) {
+  .list-menu-icon svg{
+    margin-left: 0;
+  }
 }

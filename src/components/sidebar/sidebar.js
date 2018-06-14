@@ -5,12 +5,10 @@ import { clearAuthToken } from "../../local-storage";
 import requiresLogin from "../../requires-login";
 import { withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -18,70 +16,38 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
 import SettingsPower from '@material-ui/icons/SettingsPower';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Hidden from '@material-ui/core/Hidden';
 import './sidebar.css';
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: '100%',
+    height: 430,
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
+    width: '100%',
   },
   appBar: {
-    background: 'pink',
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
+    position: 'absolute',
     marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
-  },
-  drawerPaper: {
-
-    position: 'relative',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing.unit * 7,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 9,
+    [theme.breakpoints.up('md')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
     },
   },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
+  navIconHide: {
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
+    [theme.breakpoints.up('md')]: {
+      position: 'relative',
+    },
   },
   content: {
     flexGrow: 1,
@@ -90,17 +56,14 @@ const styles = theme => ({
   },
 });
 
+
 export class SideBar extends React.Component {
   state = {
-    open: false,
+    mobileOpen: false,
   };
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleDrawerClose = () => {
-    this.setState({ open: false });
+  handleDrawerToggle = () => {
+    this.setState({ mobileOpen: !this.state.mobileOpen });
   };
   logOut() {
     this.props.dispatch(clearAuth());
@@ -115,64 +78,66 @@ export class SideBar extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
-   
+    const drawer = (
+      <div>
+        <div className={classes.toolbar} />
+          <div className="list-menu-icon" onClick={()=> this.onClickHome()}><Home style={{fontSize: '58px'}}/> Home</div>          
+          <Divider/>
+            <div className="list-menu-icon" onClick={()=> this.onClickSettings()}><Settings style={{fontSize: '58px'}}/> Settings</div>
+          <Divider/>
+            <div className="list-menu-icon" onClick={() => this.logOut()}><SettingsPower style={{fontSize: '58px'}}/> LogOut</div>
+      </div>
+    );
     return (
       <div className={classes.root}>
-        <AppBar
-          position="absolute"
-          className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
-        >
-          <Toolbar disableGutters={!this.state.open}>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, this.state.open && classes.hide)}
+              onClick={this.handleDrawerToggle}
+              className={classes.navIconHide}
             >
-              <MenuIcon />
+
+          <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-              Welcome {this.props.name}!
+              Hello {this.props.name}!
             </Typography>
           </Toolbar>
         </AppBar>
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-          }}
-          open={this.state.open}
-        >
-          <div className={classes.toolbar}>
-            <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <List>
-
-            <div className="list-menu-icon" onClick={()=> this.onClickHome()}><Home style={{fontSize: '58px'}}/> Home</div>
-    
-            
-            <Divider/>
-            
-            <div className="list-menu-icon" onClick={()=> this.onClickSettings()}><Settings style={{fontSize: '58px'}}/> Settings</div>
-
-            <Divider/>
-            
-            <div className="list-menu-icon" onClick={() => this.logOut()}><SettingsPower style={{fontSize: '58px'}}/> LogOut</div>
-
-            <Divider/>
-          </List>
-            
-        </Drawer>
+        <Hidden mdUp>
+          <Drawer
+            variant="temporary"
+            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+            open={this.state.mobileOpen}
+            onClose={this.handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden smDown implementation="css">
+          <Drawer
+            variant="permanent"
+            open
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
         <main className={classes.content}>
           <div className={classes.toolbar} />
           {this.props.children}
         </main>
-        
-        </div>
-
+      </div>
     );
   }
 }
