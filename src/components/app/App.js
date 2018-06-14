@@ -1,9 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Route, withRouter} from 'react-router-dom';
-import Dashboard from '../dashboard/dashboard';
+import {Switch, Route, withRouter} from 'react-router-dom';
+import SideBar from '../sidebar/sidebar';
 import LandingPage from '../landing-page/landing-page';
 import RegistrationPage from '../registration-page/registration-page';
+import Settings from '../settings/settings';
+import Dashboard from '../dashboard/dashboard';
 import {refreshAuthToken} from '../actions/auth';
 
 import './App.css';
@@ -41,9 +43,14 @@ export class App extends React.Component {
   render() {
       return (
           <div className="app">
-              <Route exact path="/" component={LandingPage} />
+          <Switch>
+              <SideBar>
               <Route exact path="/dashboard" component={Dashboard} />
-              <Route exact path="/register" component={RegistrationPage} />
+              <Route exact path="/settings" component={Settings}/>
+          </SideBar>
+          </Switch>
+          <Route exact path="/register" component={RegistrationPage} />
+          <Route exact path="/" component={LandingPage} />
           </div>
       );
   }
