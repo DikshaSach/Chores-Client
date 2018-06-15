@@ -5,8 +5,14 @@
     -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.25);
     -moz-box-shadow: 0 3px 6px rgba(0,0,0,.25);
     float: left;
-    margin: 10px;
-
+    margin: 15px;
+}
+.todays-date{
+  text-align: right;
+  font-size: 20px;
+}
+.dashboard-title{
+  text-align: center;
 }
 .note .text{
     padding-top: 20px;
@@ -21,6 +27,13 @@
     background: #FAFAFA;
     border-right: 20px solid transparent;
     border-bottom: 20px solid rgb(168, 216, 216);
+  }
+ 
+  .note:nth-child(3n+1):before {
+    border-bottom: 20px solid #9cd398;
+  }
+  .note:nth-child(3n+2):before {
+    border-bottom: 20px solid rgb(196, 164, 137);
   }
   .note:nth-child(even):before {
     position: absolute;
@@ -48,6 +61,12 @@
     -moz-transform: rotate(-3.5deg);
     background-color: rgb(185, 227, 227);
 }
+.note:nth-child(3n+1){
+  background-color: #bce3b9;
+}
+.note:nth-child(3n+2){
+  background-color: rgb(227, 204, 185);
+}
 .note:nth-child(even){
     transform: rotate(+3.5deg);
     -webkit-transform: rotate(+3.5deg);
@@ -72,8 +91,86 @@ div#frame a:hover.note {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
-
+    width: 100%;
 }
+
+
+.checkmark {
+    width: 60px;
+    margin: 0 auto;
+  }
+  .checkmark:hover{
+      transform: scale(1.1);
+  }
+  
+  .path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+    animation: dash 2s ease-in-out;
+    -webkit-animation: dash 2s ease-in-out;
+  }
+  
+  .spin {
+    animation: spin 2s;
+    -webkit-animation: spin 2s;
+    transform-origin: 50% 50%;
+    -webkit-transform-origin: 50% 50%;
+  }
+  
+  p {
+    font-family: sans-serif;
+    color: black;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    animation: text .5s linear .4s;
+    -webkit-animation: text .4s linear .3s;
+  }
+  
+  
+  @keyframes dash {
+   0% {
+     stroke-dashoffset: 1000;
+   }
+   100% {
+     stroke-dashoffset: 0;
+   }
+  }
+  
+ 
+  
+  @keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  
+
+  
+    
+    @keyframes text {
+    0% {
+      opacity: 0; }
+    100% {
+      opacity: 1;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 @media only screen and (max-width: 600px) {
   .note{
       width: 180px;

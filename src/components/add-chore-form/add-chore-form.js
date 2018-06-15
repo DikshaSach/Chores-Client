@@ -11,6 +11,7 @@ import { Field, reduxForm, focus } from "redux-form";
 import { addChore } from '../actions/chore';
 import { required, nonEmpty } from "../../validators";
 import Input from "../../input";
+import './add-chore-form.css';
 
 
 
@@ -56,15 +57,18 @@ export class AddChoreForm extends React.Component{
           );
         }
         return (
-          <div>
-            <Button onClick={this.handleClickOpen}>Add Chore</Button>
+          <div className="add-chore-form-container">
+            <Button id="add-chore-form-button" variant="fab" color="secondary" aria-label="add" onClick={this.handleClickOpen}>+</Button>
             <Dialog
+            className="dialog-box-container"
               open={this.state.open}
               onClose={this.handleClose}
               aria-labelledby="form-dialog-title"
+              maxWidth='sm'
+              fullWidth={true}
             >
-              <DialogTitle id="form-dialog-title">Add a Chore</DialogTitle>
-              <DialogContent>
+              <DialogTitle className="form-dialog-title">Add a Chore</DialogTitle>
+              <DialogContent className="form-dialog-content">
         <form
           className="chore-form"
           onSubmit={this.props.handleSubmit(values => this.onSubmit(values))}
@@ -80,11 +84,11 @@ export class AddChoreForm extends React.Component{
             id='choreName'
             validate={[required, nonEmpty]}
           />
-          <DialogActions>
-                <Button type="button" onClick={this.handleClose} color="primary">
+          <DialogActions className="form-dialog-actions">
+                <Button type="button" variant="contained" color="secondary" onClick={this.handleClose}>
                   Cancel
                 </Button>
-                <Button type="submit" onClick={this.handleClose} color="primary" disabled={this.props.pristine || this.props.submitting}>
+                <Button type="submit" variant="contained" color="primary" onClick={this.handleClose} disabled={this.props.pristine || this.props.submitting}>
                   Add
                 </Button>
               </DialogActions>

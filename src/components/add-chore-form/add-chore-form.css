@@ -1,0 +1,23 @@
+
+#add-chore-form-button{
+    z-index: 100;
+    float: right;
+    position: relative;
+    right: 10px;
+    bottom: 50px;
+}
+.dialog-box-container{
+    border: 10px solid black;
+}
+.form-dialog-title{
+    text-align: center;
+}
+.form-dialog-content{
+    text-align: center;
+}
+.form-dialog-actions{
+    text-align: center;
+}
+.MuiDialogActions-root-155.form-dialog-actions{
+justify-content: center !important;
+}
