@@ -68,7 +68,6 @@ export class SideBar extends React.Component {
   logOut() {
     this.props.dispatch(clearAuth());
     clearAuthToken();
-    this.props.history.push("/");
   }
   onClickHome(){
     this.props.history.push("/dashboard");

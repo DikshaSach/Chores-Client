@@ -35,7 +35,22 @@ export const deleteChoreFailure = error => ({
 export const DELETE_CHORE_REQUEST = "DELETE_CHORE_REQUEST";
 export const deleteChoreRequest = () => ({
     type: DELETE_CHORE_REQUEST
-})
+});
+export const UPDATE_CHORE_REQUEST = "UPDATE_CHORE_REQUEST";
+export const updateChoreRequest = () => ({
+    type: UPDATE_CHORE_REQUEST
+});
+export const UPDATE_CHORE_SUCCESS = "UPDATE_CHORE_SUCCESS";
+export const updateChoreSuccess = (data, completion) => ({
+    type: UPDATE_CHORE_SUCCESS,
+    data,
+    completion
+});
+export const UPDATE_CHORE_FAILURE = "UPDATE_CHORE_FAILURE";
+export const updateChoreFailure = error => ({
+    type: UPDATE_CHORE_FAILURE,
+    error
+});
 
 // get endpoint for getting all chores
 export const fetchChores = (id, date) => (dispatch) => {
@@ -69,4 +84,17 @@ export const deleteChore = (id) => dispatch => {
     })
     .then(dispatch(deleteChoreSuccess(id)))
     .catch(err => dispatch(deleteChoreFailure(err)))
+}
+export const updateChore = (choreID, taskCompletionData) => dispatch => {
+    dispatch(updateChoreRequest());
+    return fetch('http://localhost:8080/chores/edit/chore/' + choreID, {
+        method: 'PUT',
+        body: JSON.stringify({"choreCompleted": taskCompletionData }),
+        headers: {
+            'content-type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(dispatch(updateChoreSuccess(choreID,taskCompletionData)))
+    .catch(err => dispatch(updateChoreFailure(err)))
 }

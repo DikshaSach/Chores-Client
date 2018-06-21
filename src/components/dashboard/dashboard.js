@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import requiresLogin from "../../requires-login";
 import {fetchChores} from '../actions/chore';
 import {deleteChore} from '../actions/chore';
+import {updateChore} from '../actions/chore';
 import AddChoreForm from '../add-chore-form/add-chore-form';
 import './dashboard.css';
 
@@ -39,6 +40,23 @@ constructor(props){
         return this.props.history.push("/dashboard");
       });
     }
+    onClickComplete(noteID){
+      let taskCompleted = "yes";
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1; //January is 0!`
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = "0" + dd;
+      }
+      if (mm < 10) {
+        mm = "0" + mm;
+      }
+      let todaysDate = mm + "" + dd + "" + yyyy;
+      this.props.dispatch(updateChore(noteID, taskCompleted)).then(()=>{
+       this.props.dispatch(fetchChores(this.props.id, todaysDate))
+      });
+    }
 
    
   render(){
@@ -58,8 +76,8 @@ constructor(props){
     
     if(this.state.choreData !== null){
     for(let i=0; i<this.props.chores.length; i++){
-      if(this.props.chores[i].choreCompleted === 'Yes'){
-        taskCompleted =<div className="checkmark">
+      if(this.props.chores[i].choreCompleted === 'yes'){
+        taskCompleted =<div className="checkmark" id={this.props.chores[i]._id}>
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
          viewBox="0 0 161.2 161.2" enableBackground="new 0 0 161.2 161.2">
       <path className="path" fill="none" stroke="#5aa375" strokeMiterlimit="10" d="M425.9,52.1L425.9,52.1c-2.2-2.6-6-2.6-8.3-0.1l-42.7,46.2l-14.3-16.4
@@ -75,7 +93,7 @@ constructor(props){
       <p>Completed</p>
       </div>
       }else{
-        taskCompleted = <div className="checkmark">
+        taskCompleted = <div className="checkmark" id={this.props.chores[i]._id} onClick={()=> this.onClickComplete(this.props.chores[i]._id)}>
           <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
             viewBox="0 0 161.2 161.2" enableBackground="new 0 0 161.2 161.2" >
             <path className="path" fill="none" stroke="#797a79" strokeMiterlimit="10" d="M425.9,52.1L425.9,52.1c-2.2-2.6-6-2.6-8.3-0.1l-42.7,46.2l-14.3-16.4

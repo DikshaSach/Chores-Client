@@ -6,14 +6,18 @@ import {
     ADD_CHORE_SUCCESS,
     DELETE_CHORE_FAILURE,
     DELETE_CHORE_SUCCESS,
-    DELETE_CHORE_REQUEST
+    DELETE_CHORE_REQUEST,
+    UPDATE_CHORE_REQUEST,
+    UPDATE_CHORE_SUCCESS,
+    UPDATE_CHORE_FAILURE
 } from '../actions/chore';
 
 const initialState = {
     choreData: [],
     error: null,
     isFetching: false,
-    isDeleting: false
+    isDeleting: false,
+    isEditing: false
 };
 
 export default function reducer(state = initialState, action){
@@ -57,6 +61,20 @@ export default function reducer(state = initialState, action){
            isDeleting: false,
            choreData: filteredState
         });   
+    }else if(action.type === UPDATE_CHORE_REQUEST){
+        return Object.assign({}, state, {
+            isEditing: true
+        });
+    }else if(action.type === UPDATE_CHORE_FAILURE){
+        return Object.assign({}, state,{
+            isEditing: false,
+            error: action.error
+        });
+    }else if(action.type === UPDATE_CHORE_SUCCESS){
+        return Object.assign({}, state, {
+            isEditing: false
+
+        });
     }
     return state;
 }
